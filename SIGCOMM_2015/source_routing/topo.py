@@ -102,12 +102,12 @@ def main():
         h.cmd("sysctl -w net.ipv6.conf.lo.disable_ipv6=1")
         h.cmd("sysctl -w net.ipv4.tcp_congestion_control=reno")
         h.cmd("iptables -I OUTPUT -p icmp --icmp-type destination-unreachable -j DROP")
-
+        h.intf('h%d-eth0' % (n+1)).setIP('10.0.0.%d' % (n + 1), 24)
+        h.intf('h%d-eth0' % (n+1)).setMAC('00:00:00:00:00:0%d' % (n + 1))
     sleep(1)
 
     for i in xrange(nb_switches):
-        cmd = [args.cli, "--json", args.json,
-               "--thrift-port", str(_THRIFT_BASE_PORT + i)]
+        cmd = [args.cli, "--json", args.json,"--thrift-port", str(_THRIFT_BASE_PORT + i)]
         with open("commands.txt", "r") as f:
             print " ".join(cmd)
             try:

@@ -1,0 +1,6 @@
+table_set_default route_pkt _drop
+table_set_default drop_packets _drop
+table_add route_pkt route 1 => 2
+table_add route_pkt route 2 => 1
+table_add egress_port_link_state set_link_state 1 => 1
+table_add egress_port_link_state set_link_state 2 => 1
