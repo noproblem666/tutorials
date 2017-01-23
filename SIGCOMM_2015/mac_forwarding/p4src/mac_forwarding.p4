@@ -37,7 +37,7 @@ action _drop() {
 }
 
 action forward(port) {
-    modify_field(standard_metadata.egress_port, port);
+    modify_field(standard_metadata.egress_spec, port);
 }
 
 table dmac {
