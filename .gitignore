@@ -10,4 +10,8 @@
 *.pcap
 
 # Extracted solutions
-solution*/
+solution/
+
+# Misc
+.DS_Store
+*.swp
