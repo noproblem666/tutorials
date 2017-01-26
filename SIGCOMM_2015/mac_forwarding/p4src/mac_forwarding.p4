@@ -13,6 +13,19 @@
  * limitations under the License.
  */
 
+header_type ls_metadata_t {
+	fields {
+		link_state: 1; 
+	}
+}
+
+metadata ls_metadata_t ls_metadata;
+
+register link_state {
+	width: 1;
+	instance_count: 10;
+}
+
 header_type ethernet_t {
     fields {
         dstAddr : 48;
@@ -38,6 +51,7 @@ action _drop() {
 
 action forward(port) {
     modify_field(standard_metadata.egress_spec, port);
+	register_read(ls_metadata.link_state, link_state, port);
 }
 
 table dmac {
@@ -50,7 +64,15 @@ table dmac {
     }
     size : 512;
 }
+table drop_packets {
+	actions { 
+		_drop;
+	}
+}
 
 control ingress{
     apply(dmac);
+	if (ls_metadata.link_state == 0) {
+		apply(drop_packets);
+	}
 }
